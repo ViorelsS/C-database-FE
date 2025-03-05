@@ -1,6 +1,6 @@
 const net = require("net");
 
-export default function sendQuery(query: string) {
+export default async function sendQuery(query: string) {
   return new Promise((resolve, reject) => {
     const client = new net.Socket();
 

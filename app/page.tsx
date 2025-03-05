@@ -1,26 +1,24 @@
 "use client";
 
+import { executeQuery } from "@/actions/execute-query";
 import { useEffect, useState } from "react";
 
+interface ResponseData {
+  rows: String[];
+}
+
 export default function Home() {
-  const [state, setState] = useState<String[]>();
+  const [state, setState] = useState<String[]>([]);
 
-  async function runQuery() {
-    const response = await fetch("/api/query", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: "SELECT * FROM users" }),
-    });
-
-    const data = await response.json();
-    console.log("Risultato query:", data.data.rows);
-
-    setState(() => data.data.rows);
+  async function fetchData() {
+    const result = (await executeQuery("SELECT * FROM users;")) as ResponseData;
+    result.rows
+      .filter((item) => item != "Risultati:")
+      .map((item) => setState((prev) => [...prev, item]));
   }
 
   useEffect(() => {
-    runQuery();
-    console.log(state);
+    fetchData();
   }, []);
 
   return (
