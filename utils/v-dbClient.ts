@@ -16,7 +16,7 @@ export default async function sendQuery(query: string) {
       /* Convertiamo la stringa in array di stringhe */
       const rows = result.split("\n").filter((row: any) => row.trim() !== "");
 
-      resolve({ rows });
+      resolve({ ...rows });
       client.destroy();
     });
 

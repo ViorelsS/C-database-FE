@@ -1,6 +1,7 @@
 "use client";
 
 import { executeQuery } from "@/actions/execute-query";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 interface ResponseData {
@@ -17,6 +18,11 @@ export default function Home() {
       .map((item) => setState((prev) => [...prev, item]));
   }
 
+  async function fetchTables() {
+    const response = (await executeQuery("LIST TABLES;")) as any;
+    console.log("LIST TABLES: ", response);
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -30,6 +36,7 @@ export default function Home() {
           return <p key={item.toString()}>{item}</p>;
         })
       )}
+      <Button onClick={() => fetchTables()}>Carica tabelle</Button>
     </div>
   );
 }
